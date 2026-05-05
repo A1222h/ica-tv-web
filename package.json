@@ -1,0 +1,12 @@
+{
+  "name": "ica-tv-web",
+  "version": "1.0.0",
+  "description": "ICA TV WEB - Agadez",
+  "scripts": {
+    "start": "http-server public -p 8080 -c-1",
+    "dev": "http-server public -p 8080 -c-1 -o"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

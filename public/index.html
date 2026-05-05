@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="ICA TV WEB – Première plateforme TV digitale d'Agadez.">
+  <link rel="manifest" href="manifest.json">
+  <title>ICA TV WEB | Agadez</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root{--red:#e8000d;--red-v:#ff1a24;--red-dim:rgba(232,0,13,0.14);--red-glow:rgba(232,0,13,0.35);--gold:#c9a84c;--bg:#070707;--bg2:#0f0f0f;--bg3:#161616;--glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.07);--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);--text:#f5f5f5;--text2:#999;--text3:#555;--green:#00e676;--yellow:#ffd600;--ticker-h:28px;--header-h:66px;--nav-h:62px;--r:16px;--r-sm:10px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;min-height:100dvh;-webkit-tap-highlight-color:transparent;transition:background 0.5s,color 0.5s}
+    body.light-mode{--bg:#f5f5f5;--bg2:#fff;--bg3:#eee;--text:#111;--text2:#555;--text3:#999;--border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.15);--glass:rgba(0,0,0,0.03);--glass2:rgba(0,0,0,0.05)}
+    body.light-mode .player-card,body.light-mode .ad-wrap{background:#000}
+    body.light-mode .weather{background:#fff}
+    body.light-mode .about-card,body.light-mode .c-card,body.light-mode .player-bar,body.light-mode .video-dots{background:var(--bg2)}
+    body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:0.025;pointer-events:none;z-index:9999}
+    a{text-decoration:none;color:inherit}
+    button{cursor:pointer;border:none;background:none;color:inherit;font-family:inherit}
+    img{display:block;max-width:100%}
+    .bb{font-family:'Bebas Neue',sans-serif;letter-spacing:0.04em}
+    .ticker{position:fixed;top:0;left:0;right:0;height:var(--ticker-h);z-index:1000;display:flex;overflow:hidden;background:var(--bg);border-bottom:1px solid rgba(232,0,13,0.35)}
+    .ticker-flag{flex-shrink:0;background:var(--red);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:0.12em;padding:0 14px;display:flex;align-items:center;gap:6px;position:relative}
+    .ticker-flag::after{content:"";position:absolute;right:-10px;top:0;width:0;height:0;border-style:solid;border-width:var(--ticker-h) 0 0 10px;border-color:transparent transparent transparent var(--red)}
+    .ticker-track{flex:1;overflow:hidden;display:flex;align-items:center;padding-left:14px;background:linear-gradient(90deg,rgba(232,0,13,0.07) 0%,transparent 40%)}
+    .ticker-inner{display:inline-flex;white-space:nowrap;animation:marquee 30s linear infinite}
+    .ticker-inner span{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:0.08em;color:var(--text);padding-right:60px}
+    .tsep{color:var(--red)}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    header{position:fixed;top:var(--ticker-h);left:0;right:0;height:var(--header-h);z-index:900;display:flex;align-items:center;padding:0 16px;background:rgba(7,7,7,0.93);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--border)}
+    .hdr{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:540px;margin:0 auto}
+    .logo{display:flex;align-items:center;gap:11px}
+    .logo-mark{position:relative;width:44px;height:44px;border-radius:10px;background:linear-gradient(145deg,#c00010 0%,#ff2030 60%,#ff4050 100%);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 0 1px rgba(255,255,255,0.12) inset,0 4px 20px rgba(232,0,13,0.5);overflow:hidden}
+    .logo-mark-txt{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;position:relative;z-index:1}
+    .logo-mark::after{content:"";position:absolute;top:-50%;left:-80%;width:40%;height:200%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);transform:skewX(-20deg);animation:lshine 5s ease-in-out infinite}
+    .logo-mark.pulse{animation:pulselogo 1.2s ease-in-out}
+    @keyframes lshine{0%{left:-80%}16%{left:150%}100%{left:150%}}
+    @keyframes pulselogo{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+    .logo-info{display:flex;flex-direction:column;gap:1px}
+    .logo-name{font-family:'Bebas Neue',sans-serif;font-size:18px;line-height:1;letter-spacing:0.06em}
+    .logo-sub{font-size:7.5px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--text2)}
+    .logo-tag{font-size:7px;font-style:italic;color:var(--red);font-weight:300;letter-spacing:0.04em}
+    .hdr-r{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
+    .hdr-actions{display:flex;gap:7px}
+    .hdr-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;transition:transform 0.15s,box-shadow 0.15s}
+    .hdr-btn:active{transform:scale(0.88)}
+    .hdr-btn.fb{background:#1877f2;box-shadow:0 2px 12px rgba(24,119,242,0.3)}
+    .hdr-btn.vol{background:var(--bg3);border:1px solid var(--border2)}
+    .hdr-btn.vol.on{background:var(--red);border-color:var(--red);box-shadow:0 2px 12px var(--red-glow)}
+    .hdr-btn.theme-btn{background:var(--bg3);border:1px solid var(--gold);color:var(--gold)}
+    .hdr-stats{display:flex;align-items:center;gap:8px}
+    .stat-pill{display:flex;align-items:center;gap:5px;background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:3px 8px;font-size:7.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase}
+    .stat-pill.temp{color:var(--yellow);border-color:rgba(255,214,0,0.2)}
+    .stat-pill.viewers{color:var(--green);border-color:rgba(0,230,118,0.2)}
+    .stat-pill.visits{color:var(--gold);border-color:rgba(201,168,76,0.2)}
+    .ldot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.6s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,230,118,0.5)}50%{opacity:0.3;box-shadow:0 0 0 4px rgba(0,230,118,0)}}
+    main{padding-top:calc(var(--ticker-h) + var(--header-h) + 14px);padding-bottom:calc(var(--nav-h) + 20px);padding-left:8px;padding-right:8px;max-width:100%;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+    .reveal{opacity:0;transform:translateY(18px);animation:rup 0.55s cubic-bezier(0.22,1,0.36,1) forwards}
+    @keyframes rup{to{opacity:1;transform:translateY(0)}}
+    .d1{animation-delay:0.05s}.d2{animation-delay:0.13s}.d3{animation-delay:0.21s}.d4{animation-delay:0.29s}.d5{animation-delay:0.37s}.d6{animation-delay:0.45s}
+    .player-card{border-radius:0;overflow:hidden;border:none;background:#000;box-shadow:0 20px 60px rgba(0,0,0,0.8);position:relative;margin-left:-8px;margin-right:-8px}
+    .video-wrap{position:relative;width:100%;height:55vh;max-height:500px;background:#000;overflow:hidden}
+    .v-layer{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.4s ease,transform 0.4s ease}
+    .v-active{opacity:1;transform:translate(-50%,-50%) scale(1)}
+    .v-transition-out{opacity:0;transform:translate(-50%,-50%) scale(0.95)}
+    .live-stamp{position:absolute;top:10px;left:10px;z-index:20;display:flex;align-items:center;gap:5px;background:var(--red);border-radius:4px;padding:4px 8px}
+    .live-stamp-dot{width:5px;height:5px;border-radius:50%;background:#fff;animation:blink 1s infinite}
+    .live-stamp-txt{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:0.14em}
+    .player-time{position:absolute;top:10px;right:10px;z-index:20;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.08em;color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.6);border-radius:4px;padding:3px 7px}
+    .video-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:20;width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;transition:all 0.2s}
+    .video-nav:active{background:var(--red);border-color:var(--red);transform:translateY(-50%) scale(0.9)}
+    .video-nav.prev{left:10px}.video-nav.next{right:10px}
+    .v-loader{position:absolute;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:25;transition:opacity 0.5s,visibility 0.5s}
+    .v-loader.gone{opacity:0;visibility:hidden}
+    .lring-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+    .lring{width:42px;height:42px;border-radius:50%;border:2px solid rgba(255,255,255,0.06);border-top-color:var(--red);animation:spin 0.75s linear infinite}
+    .lring-outer{position:absolute;width:56px;height:56px;border-radius:50%;border:1px solid rgba(232,0,13,0.2);border-top-color:rgba(232,0,13,0.6);animation:spin 1.4s linear infinite reverse}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .lring-lbl{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:0.2em;color:var(--text2)}
+    .player-bar{padding:12px 14px;background:var(--bg2);display:flex;align-items:center;gap:12px;border-top:1px solid var(--border)}
+    .player-bar-info{flex:1;min-width:0}
+    .player-ch{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.05em;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .player-st{font-size:9px;color:var(--text2);font-weight:500;margin-top:2px}
+    .ctrl-btns{display:flex;gap:8px;align-items:center}
+    .ctrl-btn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;transition:transform 0.12s}
+    .ctrl-btn:active{transform:scale(0.88)}
+    .ctrl-btn.play{background:var(--red);box-shadow:0 0 20px var(--red-glow);width:40px;height:40px;font-size:13px}
+    .ctrl-btn.sec{background:var(--glass);border:1px solid var(--border2)}
+    .ctrl-btn.shuffle{background:var(--glass);border:1px solid var(--gold);color:var(--gold)}
+    .video-dots{display:flex;justify-content:center;gap:6px;padding:8px 0;background:var(--bg2)}
+    .video-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);transition:all 0.3s}
+    .video-dot.active{background:var(--red);box-shadow:0 0 8px var(--red-glow);width:18px;border-radius:10px}
+    .share-row{display:flex;gap:10px;padding:0 8px}
+    .share-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:13px 10px;border-radius:var(--r-sm);font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.1em;transition:transform 0.12s}
+    .share-btn:active{transform:scale(0.97)}
+    .share-btn.wa{background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.22);color:var(--green)}
+    .share-btn.fb2{background:rgba(24,119,242,0.08);border:1px solid rgba(24,119,242,0.22);color:#60a5fa}
+    .s-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:0 8px}
+    .s-head-lbl{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:0.22em;color:var(--text3);white-space:nowrap}
+    .s-head-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
+    .s-head-dot{width:4px;height:4px;border-radius:50%;background:var(--red);box-shadow:0 0 6px var(--red-glow)}
+    .weather{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin:0 8px;display:flex;align-items:center;gap:14px}
+    .w-icon{font-size:32px;line-height:1;flex-shrink:0}
+    .w-info{flex:1}
+    .w-city{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:0.08em}
+    .w-temp{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;color:var(--yellow)}
+    .w-desc{font-size:9px;font-weight:500;color:var(--text2);text-transform:uppercase;margin-top:2px}
+    .w-right{text-align:right}
+    .w-time{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text2);line-height:1}
+    .w-date{font-size:8px;font-weight:500;color:var(--text3);text-transform:uppercase;margin-top:2px}
+    .ad-wrap{border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:#000;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);margin:0 8px;aspect-ratio:16/9}
+    #ad-img{width:100%;height:100%;object-fit:cover;background:#000;display:block;transition:opacity 0.5s ease}
+    .ad-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.2) 50%,transparent 100%)}
+    .ad-bottom{position:absolute;bottom:0;left:0;right:0;padding:12px 14px 10px}
+    .ad-tag{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:2px 8px;font-size:7px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text2);margin-bottom:6px}
+    #ad-client{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:0.06em;display:block;margin-bottom:8px}
+    .ad-bar{height:3px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden}
+    #ad-progress{height:100%;width:0%;background:var(--red);border-radius:3px;transition:width 0.1s linear}
+    .ad-dots{display:flex;justify-content:center;gap:5px;margin-top:-8px;margin-bottom:4px}
+    .ad-dot{width:5px;height:5px;border-radius:50%;background:var(--border2);transition:all 0.3s}
+    .ad-dot.active{background:var(--gold);box-shadow:0 0 6px var(--gold)}
+    .gallery{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;padding-left:8px;padding-right:8px}
+    .gallery::-webkit-scrollbar{display:none}
+    .g-item{flex:0 0 110px;height:82px;border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--border);position:relative;cursor:pointer}
+    .g-item img{width:100%;height:100%;object-fit:cover}
+    .contacts{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 8px}
+    .c-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 12px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+    .c-card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--red);border-radius:3px 0 0 3px;opacity:0.6}
+    .c-role{font-size:7.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3)}
+    .c-name{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:0.04em;line-height:1.2}
+    .c-num{display:flex;align-items:center;gap:7px}
+    .c-ico{width:22px;height:22px;border-radius:6px;background:var(--red-dim);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--red-v);flex-shrink:0}
+    .c-tel{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.04em;color:var(--text2)}
+    .about-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:24px 20px;text-align:center;position:relative;overflow:hidden;margin:0 8px}
+    .about-card::before{content:"ICA";position:absolute;bottom:-10px;right:-5px;font-family:'Bebas Neue',sans-serif;font-size:110px;line-height:1;color:rgba(255,255,255,0.02);pointer-events:none}
+    .about-emb{display:inline-flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:14px;background:linear-gradient(145deg,#c00010,#ff2030);box-shadow:0 0 0 1px rgba(255,255,255,0.12) inset,0 8px 28px rgba(232,0,13,0.4);margin-bottom:14px;overflow:hidden}
+    .about-emb span{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#fff;position:relative;z-index:1}
+    .about-title{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:0.06em;margin-bottom:4px}
+    .about-slogan{font-size:8px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--red);margin-bottom:14px}
+    .about-div{width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 16px}
+    .about-desc{font-size:11px;color:var(--text2);line-height:1.65;font-style:italic;font-weight:300;margin-bottom:18px}
+    .about-soc{display:flex;justify-content:center;gap:10px}
+    .soc-btn{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:8px;font-size:11px;font-weight:600;border:1px solid var(--border2);background:var(--glass)}
+    .soc-btn.fb{color:#60a5fa}.soc-btn.wa{color:var(--green)}
+    .credit{text-align:center;font-size:7px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);padding:4px 0}
+    .search-bar{display:flex;gap:8px;padding:0 8px}
+    .search-bar input{flex:1;padding:10px 14px;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;color:var(--text);font-size:13px;outline:none}
+    .search-bar input:focus{border-color:var(--red)}
+    .search-bar button{padding:10px 16px;background:var(--red);color:#fff;border-radius:20px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:0.06em}
+    nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:rgba(7,7,7,0.96);backdrop-filter:blur(24px) saturate(180%);border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:1000;padding-bottom:env(safe-area-inset-bottom,0px)}
+    .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:7.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);position:relative}
+    .nav-btn i{font-size:17px}
+    .nav-btn.active{color:var(--red)}
+    .nav-btn.active::after{content:"";position:absolute;bottom:0;width:24px;height:2px;background:var(--red);border-radius:2px 2px 0 0}
+    #toast{position:fixed;bottom:calc(var(--nav-h) + 10px);left:50%;transform:translateX(-50%) translateY(16px);width:calc(100% - 24px);max-width:480px;background:var(--bg3);border:1px solid rgba(232,0,13,0.25);border-radius:14px;padding:14px 16px;z-index:1100;display:flex;align-items:center;gap:12px;opacity:0;pointer-events:none;transition:opacity 0.4s ease,transform 0.4s ease}
+    #toast.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+    .toast-ico{width:38px;height:38px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+    .toast-body{flex:1}
+    .toast-title{font-family:'Bebas Neue',sans-serif;font-size:13px}
+    .toast-sub{font-size:9px;color:var(--text2);margin-top:2px}
+    .toast-close{color:var(--text3);font-size:14px;padding:6px;flex-shrink:0}
+    #offline{display:none;position:fixed;top:var(--ticker-h);left:0;right:0;background:#92400e;color:#fef3c7;text-align:center;font-family:'Bebas Neue',sans-serif;font-size:11px;padding:7px;z-index:950}
+    #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:2000;align-items:center;justify-content:center}
+    #lightbox.open{display:flex}
+    #lightbox img{max-width:92vw;max-height:85dvh;border-radius:12px;border:1px solid var(--border2)}
+    #lb-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text2)}
+    .install-banner{display:none;background:var(--red);color:#fff;text-align:center;padding:12px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:0.06em;cursor:pointer;margin:0 8px;border-radius:var(--r-sm)}
+    .install-banner:active{opacity:0.8}
+    .programme-tv{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin:0 8px}
+    .prog-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px}
+    .prog-heure{color:var(--red);font-family:'Bebas Neue',sans-serif;font-size:14px;min-width:45px}
+    .prog-titre{flex:1;margin:0 10px}
+    .prog-type{color:var(--gold);font-size:10px;text-transform:uppercase}
+  </style>
+</head>
+<body>
+
+  <div id="lightbox"><img id="lb-img" src="" alt=""><button id="lb-close" onclick="closeLB()"><i class="fa-solid fa-xmark"></i></button></div>
+  <div id="offline">⚠ CONNEXION PERDUE</div>
+
+  <div class="ticker">
+    <div class="ticker-flag"><i class="fa-solid fa-signal" style="font-size:8px;"></i>&nbsp;FLASH</div>
+    <div class="ticker-track"><div class="ticker-inner" id="ticker-content"><span>🔥 ICA TV AGADEZ <span class="tsep">•</span> L'INFORMATION EN TEMPS RÉEL <span class="tsep">•</span> AFRINOVA TECH <span class="tsep">•</span> LA VOIX DU SAHARA <span class="tsep">•</span> RESTEZ CONNECTÉS 24H/24 <span class="tsep">•</span></span><span>🔥 ICA TV AGADEZ <span class="tsep">•</span> L'INFORMATION EN TEMPS RÉEL <span class="tsep">•</span> AFRINOVA TECH <span class="tsep">•</span> LA VOIX DU SAHARA <span class="tsep">•</span> RESTEZ CONNECTÉS 24H/24 <span class="tsep">•</span></span></div></div>
+  </div>
+
+  <header>
+    <div class="hdr">
+      <div class="logo">
+        <div class="logo-mark" id="logo-mark"><span class="logo-mark-txt">ICA</span></div>
+        <div class="logo-info">
+          <div class="logo-name bb">TV WEB</div>
+          <div class="logo-sub">Ici C'est Agadez</div>
+          <div class="logo-tag">Informer · Inspirer · Connecter</div>
+        </div>
+      </div>
+      <div class="hdr-r">
+        <div class="hdr-actions">
+          <button onclick="toggleTheme()" class="hdr-btn theme-btn" title="Mode sombre/clair"><i id="theme-ico" class="fa-solid fa-moon"></i></button>
+          <a href="https://www.facebook.com/share/1AWkotwvtS/" target="_blank" class="hdr-btn fb"><i class="fa-brands fa-facebook-f"></i></a>
+          <button onclick="toggleMute()" class="hdr-btn vol" id="vol-btn"><i id="vol-ico" class="fa-solid fa-volume-high"></i></button>
+        </div>
+        <div class="hdr-stats">
+          <div class="stat-pill temp"><i class="fa-solid fa-sun" style="font-size:7px;"></i><span id="temp-val">42°C</span></div>
+          <div class="stat-pill viewers"><span class="ldot"></span><span id="viewers-val">98 LIVE</span></div>
+          <div class="stat-pill visits"><i class="fa-solid fa-eye" style="font-size:7px;"></i><span id="visits-val">0</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="install-banner" id="install-banner" onclick="installApp()">📲 INSTALLER L'APPLICATION SUR L'ÉCRAN D'ACCUEIL</div>
+
+    <div class="player-card reveal d1">
+      <div class="video-wrap" id="video-wrap" ondblclick="toggleFullscreen()">
+        <div class="live-stamp"><span class="live-stamp-dot"></span><span class="live-stamp-txt">DIRECT</span></div>
+        <div class="player-time" id="clock">00:00</div>
+        <button class="video-nav prev" onclick="videoPrecedent()"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="video-nav next" onclick="videoSuivant()"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="v-loader" id="loader">
+          <div class="lring-wrap"><div class="lring-outer"></div><div class="lring"></div></div>
+          <div class="lring-lbl">Chargement…</div>
+        </div>
+        <video id="vid1" class="v-layer v-active" playsinline webkit-playsinline muted autoplay></video>
+        <video id="vid2" class="v-layer" playsinline webkit-playsinline muted></video>
+      </div>
+      <div class="video-dots" id="video-dots">
+        <div class="video-dot active"></div>
+        <div class="video-dot"></div>
+        <div class="video-dot"></div>
+      </div>
+      <div class="player-bar">
+        <div class="player-bar-info">
+          <div class="player-ch bb" id="video-title">ICA TV — Chargement…</div>
+          <div class="player-st" id="p-status">Préparation…</div>
+        </div>
+        <div class="ctrl-btns">
+          <button class="ctrl-btn shuffle" onclick="lectureAleatoire()" title="Lecture aléatoire"><i class="fa-solid fa-shuffle"></i></button>
+          <button class="ctrl-btn sec" onclick="toggleMute()"><i id="vol-ico2" class="fa-solid fa-volume-high" style="font-size:11px;"></i></button>
+          <button class="ctrl-btn play" onclick="togglePlay()"><i id="play-ico" class="fa-solid fa-pause"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-bar reveal d2">
+      <input type="text" id="search-input" placeholder="🔍 Rechercher une vidéo...">
+      <button onclick="rechercherVideo()">CHERCHER</button>
+    </div>
+
+    <div class="share-row reveal d2">
+      <a href="#" id="wa-share" class="share-btn wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+      <a href="https://www.facebook.com/share/1AWkotwvtS/" target="_blank" class="share-btn fb2"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+    </div>
+
+    <div class="weather reveal d2">
+      <div class="w-icon" id="w-ico">☀️</div>
+      <div class="w-info">
+        <div class="w-city bb">Agadez, Niger</div>
+        <div class="w-temp" id="w-temp">42°C</div>
+        <div class="w-desc" id="w-desc">Ensoleillé · Ciel dégagé</div>
+      </div>
+      <div class="w-right">
+        <div class="w-time bb" id="w-time">--:--</div>
+        <div class="w-date" id="w-date">---</div>
+      </div>
+    </div>
+
+    <div class="reveal d3">
+      <div class="s-head"><div class="s-head-dot"></div><div class="s-head-lbl">Espace Publicitaire</div><div class="s-head-line"></div></div>
+      <div class="ad-wrap">
+        <img id="ad-img" src="" alt="Publicité">
+        <div class="ad-overlay"></div>
+        <div class="ad-bottom">
+          <div class="ad-tag"><i class="fa-solid fa-circle-check" style="font-size:6px;color:#c9a84c;"></i> Sponsorisé</div>
+          <span id="ad-client" class="bb"></span>
+          <div class="ad-bar"><div id="ad-progress"></div></div>
+        </div>
+      </div>
+      <div class="ad-dots" id="ad-dots"><div class="ad-dot active"></div><div class="ad-dot"></div><div class="ad-dot"></div></div>
+    </div>
+
+    <div class="reveal d4">
+      <div class="s-head"><div class="s-head-dot"></div><div class="s-head-lbl">Programme TV</div><div class="s-head-line"></div></div>
+      <div class="programme-tv" id="programme-tv">
+        <div class="prog-item"><span class="prog-heure">08:00</span><span class="prog-titre">Journal du Matin</span><span class="prog-type">Info</span></div>
+        <div class="prog-item"><span class="prog-heure">12:00</span><span class="prog-titre">Midi Sahara</span><span class="prog-type">Culture</span></div>
+        <div class="prog-item"><span class="prog-heure">20:00</span><span class="prog-titre">Journal du Soir</span><span class="prog-type">Info</span></div>
+      </div>
+    </div>
+
+    <div class="reveal d4">
+      <div class="s-head"><div class="s-head-dot"></div><div class="s-head-lbl">Galerie Rédaction</div><div class="s-head-line"></div></div>
+      <div class="gallery">
+        <div class="g-item" onclick="openLB(this)"><img src="https://i.postimg.cc/tRkshPk7/FB-IMG-1777925868793.jpg" alt="Rédaction 1" loading="lazy"></div>
+        <div class="g-item" onclick="openLB(this)"><img src="https://i.postimg.cc/wvCQLrdc/FB-IMG-1777934474960.jpg" alt="Rédaction 2" loading="lazy"></div>
+        <div class="g-item" onclick="openLB(this)"><img src="https://i.postimg.cc/RFkLKYz7/FB-IMG-1777934510203.jpg" alt="Rédaction 3" loading="lazy"></div>
+        <div class="g-item" onclick="openLB(this)"><img src="https://i.postimg.cc/d1bjrfKR/FB-IMG-1777934501151.jpg" alt="Rédaction 4" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="reveal d5">
+      <div class="s-head"><div class="s-head-dot"></div><div class="s-head-lbl">Contacts & Partenariat</div><div class="s-head-line"></div></div>
+      <div class="contacts">
+        <a href="tel:+22796059876" class="c-card"><div class="c-role">PDG ICA WEB TV</div><div class="c-name bb">Souleymane Alhassan</div><div class="c-num"><div class="c-ico"><i class="fa-solid fa-phone"></i></div><span class="c-tel">96 05 98 76</span></div></a>
+        <a href="tel:+22789434626" class="c-card"><div class="c-role">PDG Afrinova Tech</div><div class="c-name bb">Abdel Kader Hassan Sadak</div><div class="c-num"><div class="c-ico"><i class="fa-solid fa-phone"></i></div><span class="c-tel">89 43 46 26</span></div></a>
+      </div>
+    </div>
+
+    <div class="reveal d6">
+      <div class="about-card">
+        <div class="about-emb"><span>ICA</span></div>
+        <div class="about-title bb">ICA TV WEB — La Voix du Sahara</div>
+        <div class="about-slogan">Informer · Inspirer · Connecter</div>
+        <div class="about-div"></div>
+        <p class="about-desc">Première plateforme TV digitale d'Agadez.<br><strong>Conçu par Afrinova Tech</strong></p>
+        <div class="about-soc">
+          <a href="https://www.facebook.com/share/1AWkotwvtS/" target="_blank" class="soc-btn fb"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+          <a href="https://wa.me/22796059876" class="soc-btn wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="credit"><span>© 2026 ICA TV WEB</span><span class="credit-dot"></span><span>Afrinova Tech</span><span class="credit-dot"></span><span>Agadez · Niger</span></p>
+  </main>
+
+  <nav>
+    <button class="nav-btn active"><i class="fa-solid fa-tv"></i><span>Direct</span></button>
+    <a href="admin.html" class="nav-btn"><i class="fa-solid fa-gear"></i><span>Admin</span></a>
+    <a href="https://wa.me/22796059876" class="nav-btn"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span></a>
+    <button class="nav-btn" onclick="document.querySelector('.about-card').scrollIntoView({behavior:'smooth'})"><i class="fa-solid fa-circle-info"></i><span>À Propos</span></button>
+  </nav>
+
+  <div id="toast">
+    <div class="toast-ico"><i class="fa-solid fa-bell" style="color:#fff;"></i></div>
+    <div class="toast-body"><div class="toast-title bb">Alertes ICA TV</div><div class="toast-sub">Restez informés des flash infos en direct.</div></div>
+    <button class="toast-close" onclick="closeToast()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <script>
+    'use strict';
+
+    // =============================================
+    // CONFIG VIDÉOS
+    // =============================================
+    let MES_VIDEOS = [
+      '661d13d8565c30ff347e5cb39659e859.mp4',
+      'f48acb5f510f4d2d5726f48eb8065944.mp4',
+      '9aa98c401c68899100aa0b87c5be32c0.mp4'
+    ];
+    let TITRES = [
+      'ICA TV — Reportage Agadez',
+      'ICA TV — Musée Tegadez',
+      'ICA TV — Nouvelle Émission'
+    ];
+
+    // =============================================
+    // CONFIG PUBLICITÉS
+    // =============================================
+    let LES_PUBS = [
+      { client: 'ICA News', img: 'https://i.postimg.cc/tRkshPk7/FB-IMG-1777925868793.jpg', duree: 5 },
+      { client: 'Afrinova Tech', img: 'https://i.postimg.cc/RFkLKYz7/FB-IMG-1777934510203.jpg', duree: 5 },
+      { client: 'Agadez Prestige', img: 'https://i.postimg.cc/wvCQLrdc/FB-IMG-1777934474960.jpg', duree: 5 }
+    ];
+
+    // =============================================
+    // VARIABLES
+    // =============================================
+    let currentIndex = 0;
+    let isMuted = false;
+    let isTransitioning = false;
+    let isLightMode = false;
+    let pubTimer = null;
+    let pubIndex = 0;
+    let defferedPrompt = null;
+    let visits = 0;
+    
+    const v1 = document.getElementById('vid1');
+    const v2 = document.getElementById('vid2');
+    const loader = document.getElementById('loader');
+    const playIco = document.getElementById('play-ico');
+    const volIco = document.getElementById('vol-ico');
+    const volIco2 = document.getElementById('vol-ico2');
+    const volBtn = document.getElementById('vol-btn');
+    const pStatus = document.getElementById('p-status');
+    const videoTitle = document.getElementById('video-title');
+    const clock = document.getElementById('clock');
+    const toastEl = document.getElementById('toast');
+    const videoDots = document.getElementById('video-dots');
+    const adImg = document.getElementById('ad-img');
+    const adClient = document.getElementById('ad-client');
+    const adProgress = document.getElementById('ad-progress');
+    const adDots = document.getElementById('ad-dots');
+    const videoWrap = document.getElementById('video-wrap');
+
+    // =============================================
+    // DÉMARRAGE
+    // =============================================
+    window.addEventListener('DOMContentLoaded', () => {
+      chargerAdminData();
+      initPlayer();
+      updateDots();
+      startClock();
+      updateLive();
+      setInterval(updateLive, 9000);
+      setTimeout(showToast, 7500);
+      lancerPubs();
+      initVisits();
+      initNotifications();
+      initInstallBanner();
+      initSwipeGesture();
+      initLongPressShare();
+      pulseLogo();
+      checkAdminAlert();
+      setInterval(checkAdminAlert, 3000);
+      
+      document.getElementById('wa-share').addEventListener('click', (e) => {
+        e.preventDefault();
+        window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('📺 ICA TV Agadez en direct : ' + window.location.href), '_blank', 'noopener');
+      });
+
+      window.addEventListener('offline', () => document.getElementById('offline').style.display = 'block');
+      window.addEventListener('online', () => document.getElementById('offline').style.display = 'none');
+      window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); defferedPrompt = e; });
+    });
+
+    // =============================================
+    // CHARGER DONNÉES ADMIN (LOCALSTORAGE)
+    // =============================================
+    function chargerAdminData() {
+      const savedVideos = JSON.parse(localStorage.getItem('ica_videos') || '[]');
+      if (savedVideos.length === 3 && savedVideos.some(v => v)) {
+        MES_VIDEOS = savedVideos;
+        TITRES = savedVideos.map(v => 'ICA TV — ' + v.replace('.mp4','').substring(0,15));
+      }
+      const savedPubs = JSON.parse(localStorage.getItem('ica_pubs') || '[]');
+      if (savedPubs.length && savedPubs.some(p => p.img)) {
+        LES_PUBS = savedPubs.map(p => ({...p, duree: 5}));
+      }
+      const savedTicker = localStorage.getItem('ica_ticker');
+      if (savedTicker) {
+        document.getElementById('ticker-content').innerHTML = 
+          '<span>🔥 ' + savedTicker + ' <span class="tsep">•</span></span>' +
+          '<span>🔥 ' + savedTicker + ' <span class="tsep">•</span></span>';
+      }
+    }
+
+    function checkAdminAlert() {
+      const alert = localStorage.getItem('ica_alert');
+      if (alert) {
+        document.querySelector('#toast .toast-sub').textContent = alert;
+        showToast();
+        localStorage.removeItem('ica_alert');
+      }
+    }
+
+    // =============================================
+    // LECTEUR VIDÉO
+    // =============================================
+    function initPlayer() {
+      v1.src = MES_VIDEOS[0];
+      v1.load();
+      videoTitle.textContent = TITRES[0];
+      v1.addEventListener('ended', () => jouerVideoSuivante());
+      v2.addEventListener('ended', () => jouerVideoSuivante());
+      v1.addEventListener('playing', () => { loader.classList.add('gone'); pStatus.textContent = 'Lecture en cours'; });
+      v1.addEventListener('waiting', () => { loader.classList.remove('gone'); pStatus.textContent = 'Chargement…'; });
+      v2.addEventListener('playing', () => { loader.classList.add('gone'); pStatus.textContent = 'Lecture en cours'; });
+      v2.addEventListener('waiting', () => { loader.classList.remove('gone'); pStatus.textContent = 'Chargement…'; });
+      v1.play().catch(() => { pStatus.textContent = 'Appuyez ▶ pour démarrer'; loader.classList.add('gone'); });
+    }
+
+    function jouerVideoSuivante() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      currentIndex = (currentIndex + 1) % MES_VIDEOS.length;
+      transitionVideo();
+      sonNotification();
+    }
+
+    function videoSuivant() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      currentIndex = (currentIndex + 1) % MES_VIDEOS.length;
+      transitionVideo();
+    }
+
+    function videoPrecedent() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      currentIndex = (currentIndex - 1 + MES_VIDEOS.length) % MES_VIDEOS.length;
+      transitionVideo();
+    }
+
+    function transitionVideo() {
+      const active = document.querySelector('.v-active');
+      const inactive = document.querySelector('.v-layer:not(.v-active)');
+      inactive.pause(); inactive.removeAttribute('src'); inactive.load();
+      inactive.src = MES_VIDEOS[currentIndex]; inactive.load();
+      inactive.addEventListener('canplay', function onReady() {
+        inactive.removeEventListener('canplay', onReady);
+        active.classList.add('v-transition-out');
+        active.classList.remove('v-active');
+        active.pause();
+        inactive.classList.add('v-active');
+        inactive.classList.remove('v-transition-out');
+        inactive.play().catch(()=>{});
+        videoTitle.textContent = TITRES[currentIndex];
+        updateDots();
+        loader.classList.add('gone');
+        setTimeout(() => { active.removeAttribute('src'); active.load(); active.classList.remove('v-transition-out'); isTransitioning = false; }, 400);
+      }, { once: true });
+    }
+
+    function lectureAleatoire() {
+      if (isTransitioning) return;
+      let newIndex;
+      do { newIndex = Math.floor(Math.random() * MES_VIDEOS.length); } while (newIndex === currentIndex && MES_VIDEOS.length > 1);
+      currentIndex = newIndex;
+      isTransitioning = true;
+      transitionVideo();
+    }
+
+    function rechercherVideo() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      const found = TITRES.findIndex(t => t.toLowerCase().includes(q));
+      if (found >= 0) { currentIndex = found; isTransitioning = true; transitionVideo(); }
+      else alert('Aucune vidéo trouvée pour : ' + q);
+    }
+
+    function updateDots() {
+      const dots = videoDots.querySelectorAll('.video-dot');
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
+    }
+
+    function togglePlay() {
+      const a = document.querySelector('.v-active');
+      if (a.paused) { a.play().catch(()=>{}); playIco.className = 'fa-solid fa-pause'; pStatus.textContent = 'Lecture en cours'; }
+      else { a.pause(); playIco.className = 'fa-solid fa-play'; pStatus.textContent = 'En pause'; }
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted; v1.muted = isMuted; v2.muted = isMuted;
+      const i = isMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+      volIco.className = i; volIco2.className = i;
+      volBtn.classList.toggle('on', !isMuted);
+    }
+
+    function toggleFullscreen() {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else videoWrap.requestFullscreen().catch(()=>{});
+    }
+
+    function sonNotification() {
+      try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const o = ctx.createOscillator(); const g = ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.frequency.value = 800; g.gain.value = 0.1; o.start(); o.stop(ctx.currentTime + 0.1); } catch(e){}
+    }
+
+    function pulseLogo() {
+      document.getElementById('logo-mark').classList.add('pulse');
+      setTimeout(() => document.getElementById('logo-mark').classList.remove('pulse'), 1200);
+    }
+
+    // =============================================
+    // SWIPE GESTURE
+    // =============================================
+    function initSwipeGesture() {
+      let startX = 0;
+      videoWrap.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; });
+      videoWrap.addEventListener('touchend', (e) => {
+        const diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 60) {
+          if (diff > 0) videoSuivant();
+          else videoPrecedent();
+        }
+      });
+    }
+
+    // =============================================
+    // LONG PRESS SHARE
+    // =============================================
+    function initLongPressShare() {
+      let timer;
+      videoWrap.addEventListener('touchstart', () => {
+        timer = setTimeout(() => {
+          if (navigator.share) navigator.share({ title: 'ICA TV WEB', text: 'Regarde ICA TV Agadez !', url: window.location.href }).catch(()=>{});
+          else window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('📺 ICA TV Agadez : ' + window.location.href), '_blank');
+        }, 800);
+      });
+      videoWrap.addEventListener('touchend', () => clearTimeout(timer));
+      videoWrap.addEventListener('touchmove', () => clearTimeout(timer));
+    }
+
+    // =============================================
+    // PUBLICITÉS
+    // =============================================
+    function lancerPubs() { afficherPub(0); }
+    function afficherPub(index) {
+      if (!LES_PUBS.length) return;
+      pubIndex = index;
+      const pub = LES_PUBS[index];
+      adImg.style.opacity = '0';
+      setTimeout(() => {
+        adImg.src = pub.img;
+        adClient.textContent = pub.client;
+        adImg.onload = () => { adImg.style.opacity = '1'; };
+        if (adImg.complete) adImg.style.opacity = '1';
+      }, 200);
+      adProgress.style.transition = 'none';
+      adProgress.style.width = '0%';
+      adProgress.offsetHeight;
+      adProgress.style.transition = `width ${pub.duree}s linear`;
+      adProgress.style.width = '100%';
+      const dots = adDots.querySelectorAll('.ad-dot');
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+      clearTimeout(pubTimer);
+      pubTimer = setTimeout(() => afficherPub((index + 1) % LES_PUBS.length), pub.duree * 1000);
+    }
+
+    // =============================================
+    // MODE SOMBRE / CLAIR
+    // =============================================
+    function toggleTheme() {
+      isLightMode = !isLightMode;
+      document.body.classList.toggle('light-mode', isLightMode);
+      document.getElementById('theme-ico').className = isLightMode ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+
+    // =============================================
+    // COMPTEUR VISITES
+    // =============================================
+    function initVisits() {
+      visits = parseInt(localStorage.getItem('ica_visits') || '0') + 1;
+      localStorage.setItem('ica_visits', visits);
+      document.getElementById('visits-val').textContent = visits;
+    }
+
+    // =============================================
+    // NOTIFICATIONS PUSH
+    // =============================================
+    function initNotifications() {
+      if ('Notification' in window && Notification.permission === 'default') {
+        setTimeout(() => Notification.requestPermission(), 8000);
+      }
+    }
+
+    // =============================================
+    // INSTALL PWA
+    // =============================================
+    function initInstallBanner() {
+      if (window.matchMedia('(display-mode: standalone)').matches) return;
+      setTimeout(() => document.getElementById('install-banner').style.display = 'block', 5000);
+    }
+    function installApp() {
+      if (defferedPrompt) { defferedPrompt.prompt(); defferedPrompt.userChoice.then(() => { defferedPrompt = null; }); }
+      else alert('Pour installer : Menu du navigateur → "Ajouter à l\'écran d\'accueil"');
+      document.getElementById('install-banner').style.display = 'none';
+    }
+
+    // =============================================
+    // HORLOGE
+    // =============================================
+    function startClock() {
+      const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+      const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+      function tick() {
+        const n = new Date();
+        clock.textContent = String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0');
+        document.getElementById('w-time').textContent = String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+        document.getElementById('w-date').textContent = days[n.getDay()]+' '+n.getDate()+' '+months[n.getMonth()];
+      }
+      tick(); setInterval(tick, 1000);
+    }
+
+    function updateLive() {
+      document.getElementById('viewers-val').textContent = (Math.floor(Math.random()*107)+92)+' LIVE';
+      const h = new Date().getHours(), jour = (h>=8 && h<20);
+      const t = jour ? 38+Math.floor(Math.random()*7) : 22+Math.floor(Math.random()*6);
+      document.getElementById('temp-val').textContent = t+'°C';
+      document.getElementById('w-temp').textContent = t+'°C';
+      const W = jour ? [{i:'☀️',d:'Ensoleillé · Ciel dégagé'},{i:'🌤',d:'Partiellement nuageux'}] : [{i:'🌙',d:'Nuit claire · Étoilée'},{i:'🌛',d:'Nuit fraîche du Sahara'}];
+      const w = W[Math.floor(Math.random()*W.length)];
+      document.getElementById('w-ico').textContent = w.i;
+      document.getElementById('w-desc').textContent = w.d;
+    }
+
+    function showToast(){toastEl.classList.add('show');setTimeout(closeToast,9000);}
+    function closeToast(){toastEl.classList.remove('show');}
+    function openLB(el){document.getElementById('lb-img').src=el.querySelector('img').src;document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
+    function closeLB(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+    document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLB();});
+  </script>
+</body>
+</html>

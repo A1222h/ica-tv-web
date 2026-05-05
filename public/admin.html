@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion ICA TV WEB</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      background:#0a0a0a;color:#fff;
+      font-family:'Arial',sans-serif;
+      padding:15px;max-width:700px;margin:0 auto;
+      min-height:100vh;
+    }
+    .header{
+      text-align:center;padding:20px 0;
+      border-bottom:2px solid #e8000d;margin-bottom:20px;
+    }
+    .header h1{color:#e8000d;font-size:24px;margin-bottom:5px}
+    .header p{color:#999;font-size:12px}
+    
+    .section{
+      background:#111;border:1px solid #222;
+      border-radius:12px;padding:18px;margin-bottom:18px;
+    }
+    .section-title{
+      color:#c9a84c;font-size:16px;font-weight:bold;
+      margin-bottom:12px;display:flex;align-items:center;gap:8px;
+    }
+    .section-title i{color:#e8000d;font-size:18px}
+    
+    label{
+      display:block;color:#aaa;font-size:11px;
+      margin-bottom:4px;margin-top:10px;
+    }
+    input, textarea{
+      width:100%;padding:12px;
+      background:#1a1a1a;border:1px solid #333;
+      color:#fff;border-radius:8px;font-size:14px;
+      margin-bottom:8px;
+      transition:border 0.3s;
+    }
+    input:focus, textarea:focus{
+      border-color:#e8000d;outline:none;
+      box-shadow:0 0 10px rgba(232,0,13,0.2);
+    }
+    textarea{resize:vertical;min-height:50px}
+    
+    .btn{
+      padding:12px 24px;border:none;border-radius:8px;
+      font-size:14px;font-weight:bold;cursor:pointer;
+      margin:5px 5px 5px 0;transition:all 0.2s;
+      display:inline-flex;align-items:center;gap:6px;
+    }
+    .btn:active{transform:scale(0.95)}
+    .btn-save{background:#e8000d;color:#fff}
+    .btn-save:hover{background:#ff1a24}
+    .btn-test{background:#25D366;color:#fff}
+    .btn-test:hover{background:#2ecc71}
+    .btn-reset{background:#333;color:#fff}
+    .btn-reset:hover{background:#444}
+    
+    .msg{
+      padding:10px;border-radius:8px;margin:8px 0;
+      font-size:13px;display:none;
+    }
+    .msg-success{background:rgba(0,230,118,0.1);border:1px solid #00e676;color:#00e676;display:block}
+    .msg-info{background:rgba(24,119,242,0.1);border:1px solid #1877f2;color:#60a5fa;display:block}
+    
+    .help{
+      font-size:10px;color:#666;margin-top:-5px;margin-bottom:8px;
+      font-style:italic;
+    }
+    
+    .current-info{
+      background:#1a1a1a;padding:10px;border-radius:6px;
+      margin:8px 0;font-size:12px;color:#999;
+      border-left:3px solid #c9a84c;
+    }
+    .current-info span{color:#fff;font-weight:bold}
+    
+    .preview-img{
+      width:100%;max-width:200px;height:100px;
+      object-fit:cover;border-radius:8px;margin:8px 0;
+      border:1px solid #333;display:none;
+    }
+    
+    .nav-links{
+      display:flex;gap:10px;justify-content:center;
+      margin:20px 0;
+    }
+    .nav-links a{
+      color:#999;text-decoration:none;font-size:13px;
+      padding:8px 16px;border:1px solid #333;
+      border-radius:20px;transition:all 0.3s;
+    }
+    .nav-links a:hover{color:#fff;border-color:#e8000d}
+    
+    .badge{
+      display:inline-block;padding:3px 8px;
+      border-radius:10px;font-size:9px;font-weight:bold;
+    }
+    .badge-active{background:rgba(0,230,118,0.2);color:#00e676}
+    .badge-inactive{background:rgba(255,214,0,0.2);color:#ffd600}
+    
+    @media(max-width:400px){
+      .btn{width:100%;margin:5px 0}
+      input,textarea{font-size:16px}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>📺 GESTION ICA TV WEB</h1>
+    <p>Interface simplifiée — Aucune connaissance technique requise</p>
+  </div>
+
+  <div class="nav-links">
+    <a href="index.html" target="_blank"><i class="fa-solid fa-eye"></i> Voir le site</a>
+    <a href="#" onclick="resetAll()"><i class="fa-solid fa-rotate-left"></i> Tout remettre à zéro</a>
+  </div>
+
+  <!-- SECTION 1 : VIDÉOS -->
+  <div class="section">
+    <div class="section-title">
+      <i class="fa-solid fa-video"></i> 🎬 GÉRER LES VIDÉOS
+    </div>
+    <p style="color:#888;font-size:11px;margin-bottom:10px">
+      Collez les noms des fichiers vidéo qui sont dans le dossier du site.
+      <br>Exemple : <code style="color:#c9a84c;">mavideo.mp4</code>
+    </p>
+    
+    <label>📹 VIDÉO N°1</label>
+    <input type="text" id="vid1" placeholder="Ex: reportage.mp4">
+    
+    <label>📹 VIDÉO N°2</label>
+    <input type="text" id="vid2" placeholder="Ex: museum.mp4">
+    
+    <label>📹 VIDÉO N°3</label>
+    <input type="text" id="vid3" placeholder="Ex: emission.mp4">
+    
+    <div class="current-info" id="current-videos"></div>
+    
+    <button class="btn btn-save" onclick="saveVideos()">
+      <i class="fa-solid fa-floppy-disk"></i> SAUVEGARDER
+    </button>
+    <div class="msg" id="msg-vid"></div>
+  </div>
+
+  <!-- SECTION 2 : PUBLICITÉS -->
+  <div class="section">
+    <div class="section-title">
+      <i class="fa-solid fa-rectangle-ad"></i> 📢 GÉRER LES PUBLICITÉS
+    </div>
+    <p style="color:#888;font-size:11px;margin-bottom:10px">
+      Pour changer les images : allez sur <a href="https://postimages.org/" target="_blank" style="color:#c9a84c;">postimages.org</a>, 
+      téléchargez votre image, copiez le "Direct link" et collez-le ici.
+    </p>
+    
+    <label>🖼️ IMAGE PUB N°1</label>
+    <input type="text" id="pub1img" placeholder="https://i.postimg.cc/...">
+    <input type="text" id="pub1nom" placeholder="Nom de l'annonceur">
+    <img id="preview1" class="preview-img" alt="Aperçu">
+    
+    <label>🖼️ IMAGE PUB N°2</label>
+    <input type="text" id="pub2img" placeholder="https://i.postimg.cc/...">
+    <input type="text" id="pub2nom" placeholder="Nom de l'annonceur">
+    <img id="preview2" class="preview-img" alt="Aperçu">
+    
+    <label>🖼️ IMAGE PUB N°3</label>
+    <input type="text" id="pub3img" placeholder="https://i.postimg.cc/...">
+    <input type="text" id="pub3nom" placeholder="Nom de l'annonceur">
+    <img id="preview3" class="preview-img" alt="Aperçu">
+    
+    <button class="btn btn-save" onclick="savePubs()">
+      <i class="fa-solid fa-floppy-disk"></i> SAUVEGARDER
+    </button>
+    <button class="btn btn-test" onclick="previewAll()">
+      <i class="fa-solid fa-eye"></i> VOIR LES APERÇUS
+    </button>
+    <div class="msg" id="msg-pub"></div>
+  </div>
+
+  <!-- SECTION 3 : TICKER -->
+  <div class="section">
+    <div class="section-title">
+      <i class="fa-solid fa-marquee"></i> 📝 TEXTE DÉFILANT (TICKER)
+    </div>
+    <p style="color:#888;font-size:11px;margin-bottom:10px">
+      Ce texte défile en haut du site. Utilisez <code style="color:#c9a84c;">•</code> pour séparer les phrases.
+    </p>
+    <textarea id="ticker-text" rows="2">ICA TV AGADEZ • L'INFORMATION EN TEMPS RÉEL • AFRINOVA TECH • LA VOIX DU SAHARA • RESTEZ CONNECTÉS 24H/24</textarea>
+    <p class="help">Actuel : <span id="current-ticker" style="color:#c9a84c;">—</span></p>
+    <button class="btn btn-save" onclick="saveTicker()">
+      <i class="fa-solid fa-floppy-disk"></i> SAUVEGARDER
+    </button>
+    <div class="msg" id="msg-tick"></div>
+  </div>
+
+  <!-- SECTION 4 : MESSAGE D'ALERTE -->
+  <div class="section">
+    <div class="section-title">
+      <i class="fa-solid fa-bell"></i> 📱 ENVOYER UNE ALERTE
+    </div>
+    <p style="color:#888;font-size:11px;margin-bottom:10px">
+      Cette alerte apparaîtra en bas du site pour tous les visiteurs.
+    </p>
+    <textarea id="alert-msg" rows="2" placeholder="Ex: 🔴 Émission spéciale ce soir à 20h !"></textarea>
+    <button class="btn btn-save" onclick="sendAlert()">
+      <i class="fa-solid fa-paper-plane"></i> ENVOYER L'ALERTE
+    </button>
+    <button class="btn btn-reset" onclick="clearAlert()">
+      <i class="fa-solid fa-xmark"></i> EFFACER
+    </button>
+    <div class="msg" id="msg-alert"></div>
+  </div>
+
+  <!-- SECTION 5 : ÉTAT ACTUEL -->
+  <div class="section">
+    <div class="section-title">
+      <i class="fa-solid fa-circle-info"></i> 📊 ÉTAT ACTUEL DU SITE
+    </div>
+    <div id="status-report" style="font-size:13px;color:#999">
+      Chargement...
+    </div>
+    <button class="btn btn-test" onclick="refreshStatus()" style="margin-top:10px">
+      <i class="fa-solid fa-arrows-rotate"></i> ACTUALISER
+    </button>
+  </div>
+
+  <div style="text-align:center;padding:30px 0;color:#444;font-size:11px">
+    <p>© 2026 ICA TV WEB | Afrinova Tech | Agadez, Niger</p>
+    <p style="color:#e8000d;margin-top:5px">❤️ Interface conçue pour être simple</p>
+  </div>
+
+  <script>
+    'use strict';
+
+    // =============================================
+    // CHARGER LES DONNÉES EXISTANTES
+    // =============================================
+    function loadAllData() {
+      // Vidéos
+      const videos = JSON.parse(localStorage.getItem('ica_videos') || '[]');
+      if (videos[0]) document.getElementById('vid1').value = videos[0];
+      if (videos[1]) document.getElementById('vid2').value = videos[1];
+      if (videos[2]) document.getElementById('vid3').value = videos[2];
+      updateVideoStatus();
+      
+      // Pubs
+      const pubs = JSON.parse(localStorage.getItem('ica_pubs') || '[]');
+      if (pubs[0]) { 
+        document.getElementById('pub1img').value = pubs[0].img || ''; 
+        document.getElementById('pub1nom').value = pubs[0].client || ''; 
+      }
+      if (pubs[1]) { 
+        document.getElementById('pub2img').value = pubs[1].img || ''; 
+        document.getElementById('pub2nom').value = pubs[1].client || ''; 
+      }
+      if (pubs[2]) { 
+        document.getElementById('pub3img').value = pubs[2].img || ''; 
+        document.getElementById('pub3nom').value = pubs[2].client || ''; 
+      }
+      
+      // Ticker
+      const ticker = localStorage.getItem('ica_ticker');
+      if (ticker) {
+        document.getElementById('ticker-text').value = ticker;
+        document.getElementById('current-ticker').textContent = ticker.substring(0, 60) + '...';
+      }
+      
+      refreshStatus();
+    }
+
+    // =============================================
+    // SAUVEGARDER LES VIDÉOS
+    // =============================================
+    function saveVideos() {
+      const v1 = document.getElementById('vid1').value.trim();
+      const v2 = document.getElementById('vid2').value.trim();
+      const v3 = document.getElementById('vid3').value.trim();
+      
+      if (!v1 && !v2 && !v3) {
+        showMsg('msg-vid', '⚠️ Veuillez entrer au moins un nom de vidéo.', 'info');
+        return;
+      }
+      
+      const videos = [v1, v2, v3];
+      localStorage.setItem('ica_videos', JSON.stringify(videos));
+      
+      showMsg('msg-vid', '✅ Vidéos sauvegardées avec succès ! Le site va se mettre à jour.', 'success');
+      updateVideoStatus();
+      
+      // Petit effet visuel
+      document.getElementById('vid1').style.borderColor = '#00e676';
+      document.getElementById('vid2').style.borderColor = '#00e676';
+      document.getElementById('vid3').style.borderColor = '#00e676';
+      setTimeout(() => {
+        document.getElementById('vid1').style.borderColor = '#333';
+        document.getElementById('vid2').style.borderColor = '#333';
+        document.getElementById('vid3').style.borderColor = '#333';
+      }, 2000);
+    }
+
+    function updateVideoStatus() {
+      const videos = JSON.parse(localStorage.getItem('ica_videos') || '[]');
+      const div = document.getElementById('current-videos');
+      if (videos.length && videos.some(v => v)) {
+        div.innerHTML = '📹 <span>Vidéos configurées :</span> ' + videos.filter(v=>v).join(', ');
+      } else {
+        div.innerHTML = '⚠️ <span>Aucune vidéo configurée.</span> Les vidéos par défaut seront utilisées.';
+      }
+    }
+
+    // =============================================
+    // SAUVEGARDER LES PUBS
+    // =============================================
+    function savePubs() {
+      const pubs = [
+        { img: document.getElementById('pub1img').value.trim(), client: document.getElementById('pub1nom').value.trim() },
+        { img: document.getElementById('pub2img').value.trim(), client: document.getElementById('pub2nom').value.trim() },
+        { img: document.getElementById('pub3img').value.trim(), client: document.getElementById('pub3nom').value.trim() }
+      ];
+      
+      localStorage.setItem('ica_pubs', JSON.stringify(pubs));
+      showMsg('msg-pub', '✅ Publicités sauvegardées !', 'success');
+    }
+
+    function previewAll() {
+      for (let i = 1; i <= 3; i++) {
+        const img = document.getElementById('pub' + i + 'img').value;
+        const preview = document.getElementById('preview' + i);
+        if (img) {
+          preview.src = img;
+          preview.style.display = 'block';
+        } else {
+          preview.style.display = 'none';
+        }
+      }
+      showMsg('msg-pub', '🖼️ Aperçus affichés ci-dessus', 'info');
+    }
+
+    // =============================================
+    // SAUVEGARDER LE TICKER
+    // =============================================
+    function saveTicker() {
+      const ticker = document.getElementById('ticker-text').value.trim();
+      if (!ticker) {
+        showMsg('msg-tick', '⚠️ Veuillez entrer un texte.', 'info');
+        return;
+      }
+      localStorage.setItem('ica_ticker', ticker);
+      document.getElementById('current-ticker').textContent = ticker.substring(0, 60) + '...';
+      showMsg('msg-tick', '✅ Texte défilant sauvegardé !', 'success');
+    }
+
+    // =============================================
+    // ENVOYER UNE ALERTE
+    // =============================================
+    function sendAlert() {
+      const alert = document.getElementById('alert-msg').value.trim();
+      if (!alert) {
+        showMsg('msg-alert', '⚠️ Veuillez entrer un message d\'alerte.', 'info');
+        return;
+      }
+      localStorage.setItem('ica_alert', alert);
+      showMsg('msg-alert', '📤 Alerte envoyée ! Les visiteurs la verront dans quelques secondes.', 'success');
+      document.getElementById('alert-msg').value = '';
+    }
+
+    function clearAlert() {
+      localStorage.removeItem('ica_alert');
+      document.getElementById('alert-msg').value = '';
+      showMsg('msg-alert', '🗑️ Alerte effacée.', 'info');
+    }
+
+    // =============================================
+    // ÉTAT ACTUEL
+    // =============================================
+    function refreshStatus() {
+      const videos = JSON.parse(localStorage.getItem('ica_videos') || '[]');
+      const pubs = JSON.parse(localStorage.getItem('ica_pubs') || '[]');
+      const ticker = localStorage.getItem('ica_ticker');
+      const alert = localStorage.getItem('ica_alert');
+      const visits = localStorage.getItem('ica_visits') || '0';
+      
+      let html = '';
+      html += '<div style="margin:5px 0">📹 <b>Vidéos :</b> ' + (videos.filter(v=>v).length || 'Défaut') + ' configurées</div>';
+      html += '<div style="margin:5px 0">📢 <b>Publicités :</b> ' + (pubs.filter(p=>p.img).length || 'Défaut') + ' configurées</div>';
+      html += '<div style="margin:5px 0">📝 <b>Ticker :</b> <span class="badge ' + (ticker ? 'badge-active' : 'badge-inactive') + '">' + (ticker ? 'Personnalisé' : 'Défaut') + '</span></div>';
+      html += '<div style="margin:5px 0">🔔 <b>Alerte en cours :</b> <span class="badge ' + (alert ? 'badge-active' : 'badge-inactive') + '">' + (alert ? 'OUI' : 'Non') + '</span></div>';
+      html += '<div style="margin:5px 0">👁️ <b>Visites totales :</b> ' + visits + '</div>';
+      
+      document.getElementById('status-report').innerHTML = html;
+    }
+
+    // =============================================
+    // TOUT REMETTRE À ZÉRO
+    // =============================================
+    function resetAll() {
+      if (confirm('⚠️ Êtes-vous sûr de vouloir tout effacer ?\nLe site reviendra aux réglages d\'origine.')) {
+        localStorage.removeItem('ica_videos');
+        localStorage.removeItem('ica_pubs');
+        localStorage.removeItem('ica_ticker');
+        localStorage.removeItem('ica_alert');
+        
+        // Vider les champs
+        document.getElementById('vid1').value = '';
+        document.getElementById('vid2').value = '';
+        document.getElementById('vid3').value = '';
+        document.getElementById('pub1img').value = '';
+        document.getElementById('pub1nom').value = '';
+        document.getElementById('pub2img').value = '';
+        document.getElementById('pub2nom').value = '';
+        document.getElementById('pub3img').value = '';
+        document.getElementById('pub3nom').value = '';
+        document.getElementById('ticker-text').value = '';
+        document.getElementById('alert-msg').value = '';
+        document.getElementById('current-videos').innerHTML = '⚠️ <span>Aucune vidéo configurée.</span>';
+        document.getElementById('current-ticker').textContent = '—';
+        document.querySelectorAll('.preview-img').forEach(i => i.style.display = 'none');
+        
+        refreshStatus();
+        alert('✅ Tout a été remis à zéro. Le site utilise maintenant les réglages par défaut.');
+      }
+    }
+
+    // =============================================
+    // MESSAGE DE CONFIRMATION
+    // =============================================
+    function showMsg(id, text, type) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = 'msg msg-' + type;
+      setTimeout(() => { el.className = 'msg'; }, 4000);
+    }
+
+    // =============================================
+    // DÉMARRAGE
+    // =============================================
+    loadAllData();
+
+    // Aperçu automatique quand on colle une URL
+    ['pub1img','pub2img','pub3img'].forEach((id, i) => {
+      document.getElementById(id).addEventListener('input', function() {
+        const preview = document.getElementById('preview' + (i+1));
+        if (this.value) {
+          preview.src = this.value;
+          preview.style.display = 'block';
+        } else {
+          preview.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

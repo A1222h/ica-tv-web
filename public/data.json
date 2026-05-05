@@ -1,0 +1,21 @@
+{
+  "bg_video": "",
+  "ads": [
+    {
+      "client": "ICA News",
+      "img": "https://i.postimg.cc/tRkshPk7/FB-IMG-1777925868793.jpg",
+      "duration": 7000
+    },
+    {
+      "client": "Afrinova Tech",
+      "img": "https://i.postimg.cc/RFkLKYz7/FB-IMG-1777934510203.jpg",
+      "duration": 7000
+    },
+    {
+      "client": "Agadez Prestige",
+      "img": "https://i.postimg.cc/wvCQLrdc/FB-IMG-1777934474960.jpg",
+      "duration": 7000
+    }
+  ]
+}
+
